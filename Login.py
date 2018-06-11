@@ -81,6 +81,9 @@ class requests_url(object):
                 getCell = requests.post('http://mooc.icve.com.cn/study/learn/getCellByTopicId',data=FORM_DATA,cookies = Cookies,headers = head)
                 CELLLIST=[]
                 for cell in json.loads(getCell.text)['cellList']:
+                    #isStudyFinish
+                    if cell['isStudyFinish'] == "True":
+                        break
                     if cell['categoryName'] == '文档':
                         FORM_DATA['cellId'] = cell['Id']
                         FORM_DATA['videoTimeTotalLong'] = '0'
@@ -99,7 +102,7 @@ class requests_url(object):
                         video_isStudy = requests.post('http://mooc.icve.com.cn/study/learn/statStuProcessCellLogAndTimeLong',data=FORM_DATA,cookies = Cookies,headers = head)
                         print('video:',json.loads(video_isStudy.text)['isStudy'])
 
-                    if cell['categoryName']=='作业':
+                    if cell['categoryName']=='作业'or cell['categoryName']=='测验' :
                         FORM_DATA['workExamId'] = cell['resId']
                         FORM_DATA['workExamType'] = '0'
                         FORM_DATA['useTime']  = random.randint(100,300)
