@@ -82,7 +82,7 @@ class requests_url(object):
                 CELLLIST=[]
                 for cell in json.loads(getCell.text)['cellList']:
                     #isStudyFinish
-                    if cell['isStudyFinish'] == "True":
+                    if cell['isStudyFinish'] == True:
                         break
                     if cell['categoryName'] == '文档':
                         FORM_DATA['cellId'] = cell['Id']
@@ -123,6 +123,9 @@ class requests_url(object):
                             print('作业:',json.loads(workExamSave.text)['msg'])
 
                     for childNode in cell['childNodeList']:
+
+                        if childNode['isStudyFinish'] == True:
+                            break
 
                         if  childNode['categoryName'] =='ppt':
                             FORM_DATA['cellId']=childNode['Id']
